@@ -37,8 +37,10 @@ function volumeDown() {
 function mute() {
     if (config.debug) {
         console.log('mute');
+    } else {
+        $.get('http://localhost:8080/?' + config.tv + '=Mute', function (data) { /* what to do with the data returned */
+        })
     }
-
 }
 
 function power() {
