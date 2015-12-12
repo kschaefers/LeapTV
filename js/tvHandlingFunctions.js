@@ -44,9 +44,29 @@ function mute() {
 }
 
 function power() {
+    if (config.debug) {
+        console.log('power');
+    } else {
+        $.get('http://localhost:8080/?' + config.tv + '=PowerOff', function (data) { /* what to do with the data returned */
+        })
+    }
 
 }
 
-function enterNumber() {
+function enterNumber(number) {
+    if (config.debug) {
+        console.log('enter ' + number);
+    } else {
+        $.get('http://localhost:8080/?' + config.tv + '=' + number, function (data) { /* what to do with the data returned */
+        })
+    }
+}
 
+function pressOK(){
+    if (config.debug) {
+        console.log('OK');
+    } else {
+        $.get('http://localhost:8080/?' + config.tv + '=Enter', function (data) { /* what to do with the data returned */
+        })
+    }
 }
