@@ -1,52 +1,46 @@
 function channelUp() {
-    if (config.debug) {
-        console.log('channel Up');
-    } else {
+    console.log('channel Up');
+    if (config.controlTV) {
         $.get('http://localhost:8080/?' + config.tv + '=ChUp', function (data) { /* what to do with the data returned */
         })
     }
 }
 
 function channelDown() {
-    if (config.debug) {
-        console.log('channel Down');
-    } else {
+    console.log('channel Down');
+    if (config.controlTV) {
         $.get('http://localhost:8080/?' + config.tv + '=ChDown', function (data) { /* what to do with the data returned */
         })
     }
 }
 
 function volumeUp() {
-    if (config.debug) {
-        console.log('volume Up');
-    } else {
+    console.log('volume Up');
+    if (config.controlTV) {
         $.get('http://localhost:8080/?' + config.tv + '=VolUp', function (data) { /* what to do with the data returned */
         })
     }
 }
 
 function volumeDown() {
-    if (config.debug) {
-        console.log('volume Down');
-    } else {
+    console.log('volume Down');
+    if (config.controlTV) {
         $.get('http://localhost:8080/?' + config.tv + '=VolDown', function (data) { /* what to do with the data returned */
         })
     }
 }
 
 function mute() {
-    if (config.debug) {
-        console.log('mute');
-    } else {
+    console.log('mute');
+    if (config.controlTV) {
         $.get('http://localhost:8080/?' + config.tv + '=Mute', function (data) { /* what to do with the data returned */
         })
     }
 }
 
 function power() {
-    if (config.debug) {
-        console.log('power');
-    } else {
+    console.log('power');
+    if (config.controlTV) {
         $.get('http://localhost:8080/?' + config.tv + '=PowerOff', function (data) { /* what to do with the data returned */
         })
     }
@@ -54,19 +48,29 @@ function power() {
 }
 
 function enterNumber(number) {
-    if (config.debug) {
-        console.log('enter ' + number);
-    } else {
+    console.log('enter ' + number);
+    if (config.controlTV) {
         $.get('http://localhost:8080/?' + config.tv + '=' + number, function (data) { /* what to do with the data returned */
         })
     }
 }
 
-function pressOK(){
-    if (config.debug) {
-        console.log('OK');
-    } else {
+function pressOK() {
+    console.log('OK');
+    if (config.controlTV) {
         $.get('http://localhost:8080/?' + config.tv + '=Enter', function (data) { /* what to do with the data returned */
         })
+    }
+}
+
+function switchToChannel(number) {
+    var numberAsString = number + '';
+    if ('' != numberAsString) {
+        var numberAsArray = numberAsString.split('');
+
+        $.each(numberAsArray, function (index, value) {
+            enterNumber(value);
+        });
+        pressOK();
     }
 }

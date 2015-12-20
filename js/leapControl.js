@@ -7,7 +7,7 @@ $(document).ready(function () {
         volumeMode = false,
         enterNumberMode = false,
         enterNumberModeStarted,
-    numbersAlreadyEntered = 0,
+        numbersAlreadyEntered = 0,
         palmPositionForVolumeMode,
         lastTimeHandsTogether,
         lastTimeHandsApart;
@@ -26,7 +26,7 @@ $(document).ready(function () {
 
     Leap.loop({enableGestures: true}, function (frame) {
         var newDate = new Date(),
-            newDateMinusHalfSecond = new Date(newDate).setSeconds(newDate.getSeconds() - 0.5),
+            newDateMinusHalfSecond = new Date(newDate).setSeconds(newDate.getSeconds() - 0.25),
             numberOfHands = frame.hands.length,
             numberOfFingersExtended = 0;
 
@@ -57,32 +57,30 @@ $(document).ready(function () {
 
             if (frame.gestures.length > 0 && frame.gestures[0].type === 'keyTap') {
                 //stop volume mode
-                if (config.debug) {
-                    console.log('volume mode stopped');
-                }
+                console.log('volume mode stopped');
                 volumeMode = false;
                 lastCommand = new Date();
             }
-        //} else if (enterNumberMode && lastCommand < newDateMinusHalfSecond) {
-        //    numbersAlreadyEntered += numberOfFingersExtended;
-        //    lastCommand = new Date();
-        //    console.log(numbersAlreadyEntered,frame.gestures,enterNumberModeStarted < newDateMinusHalfSecond);
-        //    if (frame.gestures.length > 0 &&
-        //        frame.gestures[0].type === 'screenTap' &&
-        //        enterNumberModeStarted < newDateMinusHalfSecond) {
-        //
-        //        var numbersToBeEntered = '' + numbersAlreadyEntered;
-        //        for (var i = 0, len = numbersToBeEntered.length; i < len; i++) {
-        //            enterNumber(numbersToBeEntered[i]);
-        //        }
-        //        pressOK();
-        //
-        //        enterNumberMode = false;
-        //        numbersAlreadyEntered = 0;
-        //        lastCommand = new Date();
-        //    }
+            //} else if (enterNumberMode && lastCommand < newDateMinusHalfSecond) {
+            //    numbersAlreadyEntered += numberOfFingersExtended;
+            //    lastCommand = new Date();
+            //    console.log(numbersAlreadyEntered,frame.gestures,enterNumberModeStarted < newDateMinusHalfSecond);
+            //    if (frame.gestures.length > 0 &&
+            //        frame.gestures[0].type === 'screenTap' &&
+            //        enterNumberModeStarted < newDateMinusHalfSecond) {
+            //
+            //        var numbersToBeEntered = '' + numbersAlreadyEntered;
+            //        for (var i = 0, len = numbersToBeEntered.length; i < len; i++) {
+            //            enterNumber(numbersToBeEntered[i]);
+            //        }
+            //        pressOK();
+            //
+            //        enterNumberMode = false;
+            //        numbersAlreadyEntered = 0;
+            //        lastCommand = new Date();
+            //    }
         } else if (!lastCommand || lastCommand < newDateMinusHalfSecond) {
-            if (config.debug && volumeMode) {
+            if (volumeMode) {
                 console.log('volume mode stopped');
             }
             volumeMode = false;
@@ -131,21 +129,18 @@ $(document).ready(function () {
                     }
                 } else if (frame.gestures.length > 0 && frame.gestures[0].type === 'keyTap') {
                     //start volume mode
-                    if (config.debug) {
-                        console.log('volume mode started');
-                    }
+                    console.log(frame.gestures[0]);
+                    console.log('volume mode started');
                     volumeMode = !!(numberOfHands === 1 && numberOfFingersExtended === 5);
                     lastCommand = new Date();
-                //} else if (frame.gestures.length > 0 && frame.gestures[0].type === 'screenTap') {
-                //    if (config.debug) {
-                //        console.log('enterNumber mode started');
-                //    }
-                //    enterNumberMode = true;
-                //    enterNumberModeStarted = new Date();
+                    //} else if (frame.gestures.length > 0 && frame.gestures[0].type === 'screenTap') {
+                    //        console.log('enterNumber mode started');
+                    //    enterNumberMode = true;
+                    //    enterNumberModeStarted = new Date();
                 }
             }
         } else {
-            if (config.debug && volumeMode) {
+            if (volumeMode) {
                 console.log('volume mode stopped');
             }
             volumeMode = false;
