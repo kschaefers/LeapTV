@@ -4,15 +4,49 @@
     <meta charset="UTF-8">
     <title>Leap Motion as Remote TV control</title>
 
+    <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
     <script type="text/javascript" src="./js/lib/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="./js/lib/leap-0.6.4.js"></script>
 
     <script type="text/javascript" src="./js/config.js"></script>
-    <script type="text/javascript" src="./js/tvHandlingFunctions.js"></script>
-    <!--<script type="text/javascript" src="./js/leapControl.js"></script>-->
+    <script type="text/javascript" src="./js/showCaseHandlingFunctions.js"></script>
     <script type="text/javascript" src="./js/controller.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
 </head>
 <body>
+<div id="TV">
+    <div id="clickCatcher"></div>
+    <div id="channelDisplay"></div>
+    <div id="volumeDisplay"></div>
+    <div id="player"></div>
+    <script>
+        if(!config.controlTV){
+            // 2. This code loads the IFrame Player API code asynchronously.
+            var tag = document.createElement('script');
 
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            // 3. This function creates an <iframe> (and YouTube player)
+            //    after the API code downloads.
+            var player;
+            function onYouTubeIframeAPIReady() {
+                player = new YT.Player('player', {
+                    height: '1080',
+                    width: '1920',
+                    playerVars: {
+                        controls: 0,
+                        showinfo:0,
+                        modestbranding: 1,
+                        loop: 1,
+                        playlist: youtubePlaylist
+                    }
+                });
+            }
+        }
+    </script>
+</div>
 </body>
 </html>

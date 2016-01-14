@@ -7,6 +7,7 @@ $(document).ready(function () {
         volumeMode = false,
         enterNumberMode = false,
         enterNumberModeLastRegistered,
+		handsRemovedAfterEnterNumberMode = true,
         numberMode_initiatorHandId,
         enterNumberMode_maxNumberRegistered = 0,
         enterNumberMode_numberEntered = 0,
@@ -27,11 +28,11 @@ $(document).ready(function () {
             no_fingersExtended = 0,
             newDateMinusHalfSecond = new Date(),
             newDateMinusOneSecond = new Date(),
-            newDateMinusTreeSeconds = new Date();
+            newDateMinusThreeSeconds = new Date();
 
         newDateMinusHalfSecond.setSeconds(newDateMinusHalfSecond.getSeconds() - 0.5);
         newDateMinusOneSecond.setSeconds(newDateMinusOneSecond.getSeconds() - 1);
-        newDateMinusTreeSeconds.setSeconds(newDateMinusTreeSeconds.getSeconds() - 3);
+        newDateMinusThreeSeconds.setSeconds(newDateMinusThreeSeconds.getSeconds() - 3);
 
         frame.fingers.forEach(function (finger) {
             if (finger.extended) {
@@ -39,7 +40,7 @@ $(document).ready(function () {
             }
         });
 
-        if (enterNumberMode && enterNumberModeLastRegistered > newDateMinusTreeSeconds) {
+        if (enterNumberMode && enterNumberModeLastRegistered > newDateMinusThreeSeconds) {
             if (0 === no_hands) {
                 if (enterNumberMode_maxNumberRegistered > 0) {
                     enterNumberMode_numberEntered += enterNumberMode_maxNumberRegistered;
@@ -50,6 +51,7 @@ $(document).ready(function () {
                 if (frame.gestures.length > 0 && frame.gestures[0].type === 'circle' && frame.gestures[0].radius > 90) {
                     switchToChannel(enterNumberMode_numberEntered);
                     enterNumberMode = false;
+					handsRemovedAfterEnterNumberMode = false;
                     enterNumberMode_numberEntered = 0;
                 } else {
                     enterNumberMode_maxNumberRegistered = enterNumberMode_maxNumberRegistered < no_fingersExtended ? no_fingersExtended : enterNumberMode_maxNumberRegistered;
@@ -62,11 +64,12 @@ $(document).ready(function () {
                 enterNumberMode_numberEntered = 0;
             }
             enterNumberMode = false;
+			handsRemovedAfterEnterNumberMode = false;
         } else if (!!prevNumberOfHands && 0 === no_hands) {
-            if (!volumeMode) {
-                if (muted){//} && lastTimeOneHandAllFingers >= newDateMinusOneSecond) {
+            if (!volumeMode && handsRemovedAfterEnterNumberMode) {
+                if (muted){// && lastTimeOneHandAllFingers >= newDateMinusOneSecond) {
                     mute();
-                } else if (powerOff && lastTimeTwoHandsApart >= newDateMinusOneSecond) {
+                } else if (powerOff){//} && lastTimeTwoHandsApart >= newDateMinusOneSecond) {
                     power();
                 } else if (no_swipe_up > no_swipe_down) {
                     channelUp();
@@ -86,7 +89,8 @@ $(document).ready(function () {
             powerOff = false;
             volumeMode = false;
             enterNumberMode = false;
-        } else if (0 < no_hands) {
+			handsRemovedAfterEnterNumberMode = true;
+        } else if (0 < no_hands && handsRemovedAfterEnterNumberMode) {
             // still in action
             if (1 === no_hands) {
                 // keyTap gesture
